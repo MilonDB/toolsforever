@@ -202,6 +202,22 @@ class database
         print_r($results);
     }
 
+    public function fill_product_dropdown($productcode, $product){
+
+        $sqlFetchDropdownArtikel = "SELECT productcode, product FROM artikel";
+
+        $stmt = $this->db->prepare($sqlFetchDropdownArtikel);
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+
+        
+
+
+    }
+
     public function delete_voorraad_from_database($productcode)
     {
 

@@ -71,6 +71,7 @@
             $inkoopprijs = trim(strtolower($_POST['inkoopprijs']));
             $verkoopprijs = trim(strtolower($_POST['verkoopprijs']));
             $productcode = $_POST['productcode'];
+            $product = trim(strtolower($_POST['product']));
 
             $error = false;
 
@@ -83,6 +84,7 @@
 
     if (isset($_GET['productcode'])) {
         $productcode = $_GET['productcode'];
+
         echo $productcode;
         $deleted = $db->delete_artikel_from_database($productcode, $fabriekscode);
 
@@ -102,7 +104,8 @@
     $columns = array_keys($artikelData[0]);
 
 
-
+    $productcode = $_POST['productcode'];
+    $product = $_POST['product'];
 
 
 
@@ -230,12 +233,12 @@
                          <input type="text" name="inkoopprijs" id="inkoopprijs" placeholder="inkoopprijs" value="<?php echo isset($_POST['inkoopprijs']) ? htmlentities($_POST['inkoopprijs']) : ''; ?>" required><br>
                          <input type="text" name="verkoopprijs" id="verkoopprijs" placeholder="verkoopprijs" value="<?php echo isset($_POST['verkoopprijs']) ? htmlentities($_POST['verkoopprijs']) : ''; ?>" required><br>
                          <label for="fabriek">kies product om te wijzigen:</label>
+                         <?php $results = $db->fill_product_dropdown($productcode, $product); ?>
                          <select id="productcode" name="productcode">
-                             <option value=10>lego</option>
-                             <option value=11>neba</option>
-                             <option value=12>play</option>
-                             <option value=13>xbox</option>
-                             <option value=17>nintendo</option>
+                             <?php if (is_array($results) && count($results) > 0) {
+                                    foreach ($results as $product) { ?>
+                                     <option value="<?= $product['productcode']; ?>"><?= $product['product']; ?></option> <?php } ?>
+                             <?php } ?>
                          </select><br>
                          <input type="submit" name='edit' value="edit"><br>
                      </form>
